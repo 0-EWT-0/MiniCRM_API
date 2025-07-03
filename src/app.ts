@@ -15,7 +15,7 @@ class App {
   private setupMiddlewares(): void {
     this.app.use(
       cors({
-        origin: "http://localhost:5173", // aca va el puerto del front
+        origin: "https://minicrm-api.onrender.com", // aca va el puerto del front
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
