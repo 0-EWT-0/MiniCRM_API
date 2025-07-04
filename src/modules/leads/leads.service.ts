@@ -81,7 +81,6 @@ class LeadService {
     const result = await this.db.query(query, values);
     const newLead = result.rows[0];
 
-    // Obtener el correo del usuario destino
     const userRes = await this.db.query(
       `SELECT email, name FROM users_crm WHERE user_id = $1`,
       [lead.id_user_id]

@@ -4,6 +4,6 @@ import { verifyToken } from "../../middlewares/authMiddleware";
 
 const tagRouter = Router();
 
-tagRouter.get("/getAllTags/:id", verifyToken, tagController.GetAllTags);
+tagRouter.get("/getAllTags", verifyToken, tagController.GetAllTags);
 
 export default tagRouter;

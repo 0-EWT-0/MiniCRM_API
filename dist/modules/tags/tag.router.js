@@ -7,5 +7,5 @@ const express_1 = require("express");
 const tag_controller_1 = __importDefault(require("./tag.controller"));
 const authMiddleware_1 = require("../../middlewares/authMiddleware");
 const tagRouter = (0, express_1.Router)();
-tagRouter.get("/getAllTags/:id", authMiddleware_1.verifyToken, tag_controller_1.default.GetAllTags);
+tagRouter.get("/getAllTags", authMiddleware_1.verifyToken, tag_controller_1.default.GetAllTags);
 exports.default = tagRouter;

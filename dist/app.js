@@ -14,7 +14,7 @@ class App {
     }
     setupMiddlewares() {
         this.app.use((0, cors_1.default)({
-            origin: "http://localhost:5173", // aca va el puerto del front
+            origin: "http://localhost:5173", // https://mini-crm-client-seven.vercel.app // aca va el puerto del front
             methods: ["GET", "POST", "PUT", "DELETE"],
             allowedHeaders: ["Content-Type", "Authorization"],
             credentials: true,
