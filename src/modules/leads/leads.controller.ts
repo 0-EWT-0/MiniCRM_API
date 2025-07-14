@@ -45,10 +45,10 @@ class LeadController {
   });
 
   public CreateLead = asyncHandler(async (req: Request, res: Response) => {
-    if (!req.body.id_tag_id || isNaN(req.body.id_tag_id)) {
-      res.status(400).json({ message: "Etiqueta inválida o no proporcionada" });
-      return;
-    }
+    // if (!req.body.id_tag_id || isNaN(req.body.id_tag_id)) {
+    //   res.status(400).json({ message: "Etiqueta inválida o no proporcionada" });
+    //   return;
+    // }
     const result = await this.leadService.CreateLead(req.body);
     res.status(201).json(result);
   });

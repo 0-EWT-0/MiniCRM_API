@@ -22,6 +22,6 @@ leadRouter.patch(
   leadsController.UpdateLeadTag
 );
 
-leadRouter.post("/createLead", verifyToken, leadsController.CreateLead);
+leadRouter.post("/createLead", leadsController.CreateLead);
 
 export default leadRouter;
