@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import auth from "../../utils/auth";
 import { Pool } from "pg";
+import axios from "axios";
 
 interface LoginUser {
   email: string;
@@ -21,24 +22,37 @@ class AuthService {
     this.db = db;
   }
 
-  public async Register(user: RegisterUser): Promise<{ message: string }> {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+  public async Register(
+    user: RegisterUser & { recaptchaToken: string }
+  ): Promise<{ message: string }> {
+    const { recaptchaToken, ...userData } = user;
 
-    if (user.is_accepted === true) {
+    // Validar reCAPTCHA con Google
+    const { data } = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      new URLSearchParams({
+        secret: process.env.RECAPTCHA_SECRET_KEY!,
+        response: recaptchaToken,
+      })
+    );
+
+    if (!data.success || data.score < 0.5) {
+      throw new Error("Fallo la verificación de reCAPTCHA");
+    }
+
+    // Continuar con el registro
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    if (userData.is_accepted) {
       const query = `
-        INSERT INTO users_crm (name, email, password)
-        VALUES ($1, $2, $3)
-        `;
-
-      const values = [user.name, user.email, hashedPassword];
-
+      INSERT INTO users_crm (name, email, password)
+      VALUES ($1, $2, $3)
+    `;
+      const values = [userData.name, userData.email, hashedPassword];
       await this.db.query(query, values);
-
       return { message: "Usuario registrado correctamente" };
-    } else if (user.is_accepted === false) {
-      return { message: "Terminos no aceptados" };
     } else {
-      throw new Error("Error al registrar el usuario");
+      return { message: "Términos no aceptados" };
     }
   }
 
